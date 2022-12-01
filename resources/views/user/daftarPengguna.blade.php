@@ -13,36 +13,14 @@
                 deferRender: true,
                 type: 'GET',
                 destroy: true,
-                columns: [{
-                        data: 'id',
-                        name: 'id',
-                    },
-                    {
-                        data: 'fullname',
-                        name: 'fullname'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'address',
-                        name: 'address'
-                    },
-                    {
-                        data: 'birthdate',
-                        name: 'birthdate'
-                    },
-                    {
-                        data: 'phoneNumber',
-                        name: 'phoneNumber'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
+                columns: [
+                    { data: 'id', name: 'id'},
+                    { data: 'fullname', name: 'fullname'},
+                    { data: 'email', name: 'email'},
+                    { data: 'address', name: 'address'},
+                    { data: 'birthdate', name: 'birthdate'},
+                    { data: 'phoneNumber', name: 'phoneNumber'},
+                    { data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
         });

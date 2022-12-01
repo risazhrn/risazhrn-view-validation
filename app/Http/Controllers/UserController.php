@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Datatables;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -75,7 +76,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('user.infoPengguna', ['user' => $user]);
+        return view('user.infoPengguna', compact('user'));
     }
 
     /**
@@ -130,9 +131,9 @@ class UserController extends Controller
         return Datatables::of($users)
             ->addColumn('action', function ($user) {
                 $html = '
-                <button data-rowid="" class="btn btn-xs btn-light" data-toggle="tooltip" data-placements="top" data-container="body" title="Edit User" onclick="infoUser(' . "'" . $user->id . "'" . ')">
-                <i class="fa fa-edit"></i>
-                ';
+                <a href ="' . url('userView') . "/" . $user->id . '">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                </a>';
                 return $html;
             })
             ->make(true);

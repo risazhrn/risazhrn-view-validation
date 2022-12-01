@@ -32,10 +32,10 @@
         <div class="mt-4">
             <x-input-label for="jumlahKoleksi" :value="__('JumlahKoleksi')" />
 
-            <x-text-input id="jumlahKoleksi" class="block mt-1 w-full" type="number" name="jumlahKoleksi" :value="old('jumlahKoleksi')"
+            <x-text-input id="jumlahKoleksi" class="block mt-1 w-full" type="text" name="jumlahKoleksi" :value="old('jumlahKoleksi')"
                 required />
 
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-error :messages="$errors->get('jumlahKoleksi')" class="mt-2" />
         </div>
 
 

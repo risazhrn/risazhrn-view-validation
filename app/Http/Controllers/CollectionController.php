@@ -38,19 +38,26 @@ class CollectionController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'namaKoleksi' => ['required'],
-            'jenisKoleksi' => ['required', 'numeric'],
-            'jumlahKoleksi' => ['required', 'numeric'],
-        ]);
 
-        Collection::create([
+        $request->validate([
+            'namaKoleksi' => ['required', 'string', 'max:255', 'unique:collections'],
+            'jenisKoleksi' => ['required', 'gt:0'],
+            'jumlahKoleksi' => ['required', 'gt:0'],
+        ],
+            [
+                'nama.unique' => 'Nama koleksi tersebut sudah ada',
+            ]);
+
+        $koleksi = [
             'namaKoleksi' => $request->namaKoleksi,
             'jenisKoleksi' => $request->jenisKoleksi,
-            'jumlahKoleksi' => $request->jumlahKoleksi,
-        ]);
+            'jumlahAwal' => $request->jumlahKoleksi,
+            'jumlahSisa' => $request->jumlahKoleksi,
+            'jumlahKeluar' => 0,
+        ];
 
-        return to_route('koleksi');
+        DB::table('collections')->insert($koleksi);
+        return view('koleksi.daftarKoleksi');
 
     }
 
@@ -62,7 +69,7 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection)
     {
-        return view('koleksi.infoKoleksi', ['collection' => $collection]);
+        return view('koleksi.infoKoleksi', compact('collection'));
 
     }
 
@@ -86,7 +93,20 @@ class CollectionController extends Controller
      */
     public function update(Request $request, Collection $collection)
     {
-        //
+        $request->validate([
+            'namaKoleksi' => 'required|string',
+            'jenisKoleksi' => 'required|numeric|gt:0',
+            'jumlahKeluar' => 'required|gt:0',
+        ]);
+
+        $collection->update([
+            'namaKoleksi' => $request->namaKoleksi,
+            'jenisKoleksi' => $request->jenisKoleksi,
+            'jumlahSisa' => $collection->jumlahAwal - $request->jumlahKeluar,
+            'jumlahKeluar' => $request->jumlahKeluar,
+        ]);
+
+        return to_route("koleksi");
     }
 
     /**
@@ -113,7 +133,9 @@ class CollectionController extends Controller
             WHEN jenisKoleksi="3" THEN "Cakram Digital"
             END) AS jenis
             '),
-                'jumlahKoleksi as jumlah'
+                'jumlahAwal as jumlahAwal',
+                'jumlahSisa as jumlahSisa',
+                'jumlahKeluar as jumlahKeluar',
             )
             ->orderBy('judul', 'asc')
             ->get();
@@ -121,9 +143,9 @@ class CollectionController extends Controller
         return Datatables::of($collection)
             ->addColumn('action', function ($collection) {
                 $html = '
-            <button data-rowid="" class="btn btn-xs btn-light" data-toggle="tooltip" data-placements="top" data-container="body" title="Edit Koleksi" onclick="infoKoleksi(' . "'" . $collection->id . "'" . ')">
+            <a href ="' . url('koleksiView') . "/" . $collection->id . '">
             <i class="fa fa-edit"></i>
-            ';
+            </a>';
                 return $html;
             })
             ->make(true);

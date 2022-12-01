@@ -13,28 +13,13 @@
                 deferRender: true,
                 type: 'GET',
                 destroy: true,
-                columns: [{
-                        data: 'id',
-                        name: 'id',
-                    },
-                    {
-                        data: 'judul',
-                        name: 'judul'
-                    },
-                    {
-                        data: 'jenis',
-                        name: 'jenis'
-                    },
-                    {
-                        data: 'jumlah',
-                        name: 'jumlah'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
+                columns: [
+                    { data: 'id', name: 'id' },
+                    { data: 'judul', name: 'judul' },
+                    { data: 'jenis', name: 'jenis' },
+                    { data: 'jumlahAwal', name: 'jumlahAwal' },
+                    { data: 'jumlahSisa', name: 'jumlahSisa' },
+                    { data: 'action', name: 'action', orderable: false, searchable: false },
                 ]
             });
         });
@@ -48,7 +33,8 @@
                 <th>No</th>
                 <th>Judul</th>
                 <th>Jenis</th>
-                <th>Jumlah</th>
+                <th>Jumlah Awal</th>
+                <th>Jumlah Sisa </th>
                 <th>Opsi</th>
             </tr>
         </thead>
